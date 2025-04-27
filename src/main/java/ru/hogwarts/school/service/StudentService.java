@@ -19,13 +19,7 @@ public class StudentService {
     }
 
     public Student getStudentById(long id) {
-        try {
             return studentRepository.findById(id).get();
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-
     }
 
     public Student editStudent(Student student) {
