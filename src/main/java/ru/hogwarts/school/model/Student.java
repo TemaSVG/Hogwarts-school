@@ -20,7 +20,7 @@ public class Student {
     @JsonBackReference
     private Faculty faculty;
 
-    public Student(Long id, String name, int age) {
+    public Student(Long id, String name, int age, int i) {
         this.id = id;
         this.name = name;
         this.age = age;

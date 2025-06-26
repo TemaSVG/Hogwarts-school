@@ -16,12 +16,13 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
+
     public Student createStudent(Student student) {
         return studentRepository.save(student);
     }
 
     public Student getStudentById(long id) {
-        return studentRepository.findById(id).get();
+        return studentRepository.findById(id).orElse(null);
     }
 
     public Student editStudent(Student student) {

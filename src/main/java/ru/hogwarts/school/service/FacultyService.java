@@ -18,6 +18,9 @@ public class FacultyService {
     }
 
 
+    public Faculty getFacultyById(long id) {
+        return facultyRepository.findById(id).get();
+    }
     public Faculty createFaculty(Faculty faculty) {
         try {
             return facultyRepository.save(faculty);
@@ -27,12 +30,15 @@ public class FacultyService {
         return null;
     }
 
-    public Faculty findFacultyById(long id) {
-        return facultyRepository.findById(id).get();
-    }
 
     public Faculty editFaculty(Faculty faculty) {
-        return facultyRepository.save(faculty);
+        Faculty existingFaculty = facultyRepository.findById(faculty.getId()).orElse(null);
+        if (existingFaculty == null) {
+            return null;
+        }
+        existingFaculty.setName(faculty.getName());
+        existingFaculty.setColor(faculty.getColor());
+        return facultyRepository.save(existingFaculty);
     }
 
     public void deleteFaculty(long id) {
