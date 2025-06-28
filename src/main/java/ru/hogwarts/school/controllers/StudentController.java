@@ -30,8 +30,8 @@ public class StudentController {
     }
 
     @GetMapping("/{id}/faculty")
-    public ResponseEntity<Faculty> getStudentFaculty(@PathVariable Long id) {
-        return ResponseEntity.ok(studentService.getFaculty(id));
+    public Faculty getStudentFaculty(@PathVariable Long id) {
+        return studentService.getFaculty(id);
     }
 
 
@@ -56,17 +56,17 @@ public class StudentController {
     }
 
     @GetMapping("filter")
-    public ResponseEntity<Collection<Student>> findStudentByAge(
+    public Collection<Student> findStudentByAge(
             @RequestParam Integer age,
             @RequestParam(required = false) Integer beforeAge) {
         if (age != null && beforeAge != null) {
-            return ResponseEntity.ok(studentService.findByAgeBetween(age, beforeAge));
+            return studentService.findByAgeBetween(age, beforeAge);
         }
         if (age != null) {
 
-            return ResponseEntity.ok(studentService.findStudentByAge(age));
+            return studentService.findStudentByAge(age);
         }
-        return ResponseEntity.ok(Collections.emptyList());
+        return Collections.emptyList();
     }
 
     @GetMapping
@@ -75,8 +75,8 @@ public class StudentController {
     }
 
     @GetMapping("count")
-    public ResponseEntity<Long> countStudent() {
-        return ResponseEntity.ok(studentService.getCountStudents());
+    public Long countStudent() {
+        return studentService.getCountStudents();
     }
 
     @GetMapping("average-age")

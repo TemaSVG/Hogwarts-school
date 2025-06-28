@@ -1,7 +1,6 @@
 package ru.hogwarts.school.controllers;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +14,9 @@ import ru.hogwarts.school.service.AvatarService;
 @RequestMapping("/avatar")
 public class AvatarController {
     private final AvatarService avatarService;
-    private final AvatarRepository avatarRepository;
 
     public AvatarController(AvatarService avatarService, AvatarRepository avatarRepository) {
         this.avatarService = avatarService;
-        this.avatarRepository = avatarRepository;
     }
 
     // 1. Загрузка аватара
