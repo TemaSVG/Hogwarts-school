@@ -1,11 +1,13 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.AvatarRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
+import org.springframework.data.domain.PageRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,5 +51,9 @@ public class AvatarService {
         Avatar avatar = avatarRepository.findById(id).orElseThrow();
         Path path = Paths.get(avatar.getFilePath());
         return Files.readAllBytes(path);
+    }
+
+    public Page<Avatar> getAvatarsPage(int page, int size) {
+        return avatarRepository.findAll(PageRequest.of(page, size));
     }
 }

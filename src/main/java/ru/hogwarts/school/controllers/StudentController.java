@@ -30,8 +30,8 @@ public class StudentController {
     }
 
     @GetMapping("/{id}/faculty")
-    public ResponseEntity<Faculty> getStudentFaculty(@PathVariable Long id) {
-        return ResponseEntity.ok(studentService.getFaculty(id));
+    public Faculty getStudentFaculty(@PathVariable Long id) {
+        return studentService.getFaculty(id);
     }
 
 
@@ -56,21 +56,44 @@ public class StudentController {
     }
 
     @GetMapping("filter")
-    public ResponseEntity<Collection<Student>> findStudentByAge(
+    public Collection<Student> findStudentByAge(
             @RequestParam Integer age,
             @RequestParam(required = false) Integer beforeAge) {
         if (age != null && beforeAge != null) {
-            return ResponseEntity.ok(studentService.findByAgeBetween(age, beforeAge));
+            return studentService.findByAgeBetween(age, beforeAge);
         }
         if (age != null) {
 
-            return ResponseEntity.ok(studentService.findStudentByAge(age));
+            return studentService.findStudentByAge(age);
         }
-        return ResponseEntity.ok(Collections.emptyList());
+        return Collections.emptyList();
     }
 
     @GetMapping
     public Collection<Student> getAllStudent() {
         return studentService.getAllStudent();
+    }
+
+    @GetMapping("count")
+    public Long countStudent() {
+        return studentService.getCountStudents();
+    }
+
+    @GetMapping("average-age")
+    public ResponseEntity<Double> getAverageAge() {
+        Double averageAge = studentService.getAverageAge();
+        if (averageAge == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(averageAge);
+    }
+
+    @GetMapping("lastFive")
+    public ResponseEntity<Collection<Student>> getLastStudents() {
+        Collection<Student> lastStudents = studentService.getLastStudents();
+        if (lastStudents.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(lastStudents);
     }
 }
