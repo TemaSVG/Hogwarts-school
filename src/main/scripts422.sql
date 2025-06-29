@@ -1,0 +1,16 @@
+CREATE TABLE car (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    brand VARCHAR(255) NOT NULL,
+    model VARCHAR(255) NOT NULL,
+    price DECIMAL(15,2) NOT NULL
+);
+
+
+CREATE TABLE person (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    age INT NOT NULL,
+    has_license BOOLEAN NOT NULL,
+    car_id BIGINT,
+    CONSTRAINT fk_person_car FOREIGN KEY (car_id) REFERENCES car(id)
+);
