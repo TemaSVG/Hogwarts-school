@@ -1,12 +1,29 @@
 ALTER TABLE student
-    MODIFY age INT NOT NULL DEFAULT 20,
+    ALTER COLUMN age SET NOT NULL,
+    ALTER COLUMN age SET DEFAULT 20,
     ADD CONSTRAINT chk_student_age CHECK (age >= 16);
 
 ALTER TABLE student
-    MODIFY name VARCHAR(255) NOT NULL,
+    ALTER COLUMN name SET NOT NULL,
     ADD CONSTRAINT uq_student_name UNIQUE (name);
 
 ALTER TABLE faculty
-    MODIFY name VARCHAR(255) NOT NULL,
-    MODIFY color VARCHAR(255) NOT NULL,
+    ALTER COLUMN name SET NOT NULL,
+    ALTER COLUMN color SET NOT NULL,
     ADD CONSTRAINT uq_faculty_name_color UNIQUE (name, color);
+
+SELECT name, color, COUNT(*)
+FROM faculty
+GROUP BY name, color
+HAVING COUNT(*) > 1;
+
+DELETE FROM faculty
+WHERE id NOT IN (
+    SELECT MIN(id)
+    FROM faculty
+    GROUP BY name, color
+);
+
+SELECT * FROM faculty WHERE color IS NULL;
+
+DELETE FROM faculty WHERE color IS NULL;
