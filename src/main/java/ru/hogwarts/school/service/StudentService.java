@@ -90,4 +90,20 @@ public class StudentService {
         logger.info("Был вызван метод получения последних 5 студентов");
         return studentRepository.getFiveLastStudents();
     }
+
+    public List<String> getNamesStartsWithA() {
+        return studentRepository.findAll().stream()
+                .map(Student::getName)
+                .filter(name -> name != null && !name.isEmpty() && name.toUpperCase().startsWith("А"))
+                .map(String::toUpperCase)
+                .sorted()
+                .toList();
+    }
+
+    public Double getAverageAgeAll() {
+        return studentRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
+    }
 }

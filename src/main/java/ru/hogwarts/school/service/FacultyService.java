@@ -63,4 +63,12 @@ public class FacultyService {
     public List<Faculty> getAllFaculty() {
         return facultyRepository.findAll();
     }
+
+    public String getLongestFacultyName() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .filter(name -> name != null)
+                .max((a, b) -> Integer.compare(a.length(), b.length()))
+                .orElse("");
+    }
 }

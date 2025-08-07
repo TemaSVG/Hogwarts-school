@@ -16,4 +16,17 @@ public class InfoController {
     public String getPort() {
         return port;
     }
+
+    @GetMapping("/slowSum")
+    public int getSlowSum() {
+        return java.util.stream.Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .reduce(0, Integer::sum);
+    }
+
+    @GetMapping("/fastSum")
+    public int getFastSum() {
+        int n = 1_000_000;
+        return n * (n + 1) / 2;
+    }
 }
