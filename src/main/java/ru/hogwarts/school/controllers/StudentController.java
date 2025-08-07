@@ -79,7 +79,7 @@ public class StudentController {
         return studentService.getCountStudents();
     }
 
-    @GetMapping("average-age")
+    @GetMapping("averageAge")
     public ResponseEntity<Double> getAverageAge() {
         Double averageAge = studentService.getAverageAge();
         if (averageAge == null) {
@@ -98,12 +98,64 @@ public class StudentController {
     }
 
     @GetMapping("namesStartsWithA")
-    public List<String> getNamesStartsWithA() {
+    public Collection<String> getNamesStartsWithA() {
         return studentService.getNamesStartsWithA();
     }
 
     @GetMapping("averageAgeAll")
     public Double getAverageAgeAll() {
         return studentService.getAverageAgeAll();
+    }
+
+    @GetMapping("printParallel")
+    public void printStudentsParallel() {
+        var students = studentService.getAllStudent().stream().toList();
+        if (students.size() < 6) {
+            System.out.println("Недостаточно студентов для вывода");
+            return;
+        }
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        Thread t1 = new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        });
+        
+        Thread t2 = new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        });
+        t1.start();
+        t2.start();
+    }
+
+    private static synchronized void printStudentNameSync(String name) {
+        System.out.println(name);
+    }
+
+
+    @GetMapping("printSynchronized")
+    public void printStudentsSynchronized() {
+        var students = studentService.getAllStudent().stream().toList();
+        if (students.size() < 6) {
+            System.out.println("Недостаточно студентов для вывода");
+            return;
+        }
+        
+        printStudentNameSync(students.get(0).getName());
+        printStudentNameSync(students.get(1).getName());
+        
+        Thread t1 = new Thread(() -> {
+            printStudentNameSync(students.get(2).getName());
+            printStudentNameSync(students.get(3).getName());
+        });
+        
+        Thread t2 = new Thread(() -> {
+            printStudentNameSync(students.get(4).getName());
+            printStudentNameSync(students.get(5).getName());
+        });
+        t1.start();
+        t2.start();
     }
 }
