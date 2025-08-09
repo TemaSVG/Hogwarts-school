@@ -106,4 +106,53 @@ public class StudentService {
                 .average()
                 .orElse(0.0);
     }
+
+    public void printStudentsParallel() {
+        List<Student> students = getAllStudent().stream().toList();
+        if (students.size() < 6) {
+            System.out.println("Недостаточно студентов для вывода");
+            return; 
+        }
+        System.out.println(students.get(0).getName());
+        System.out.println(students.get(1).getName());
+
+        Thread t1 = new Thread(() -> {
+            System.out.println(students.get(2).getName());
+            System.out.println(students.get(3).getName());
+        });
+        
+        Thread t2 = new Thread(() -> {
+            System.out.println(students.get(4).getName());
+            System.out.println(students.get(5).getName());
+        });
+        t1.start();
+        t2.start();
+    }
+
+    private static synchronized void printStudentNameSync(String name) {
+        System.out.println(name);
+    }
+
+    public void printStudentsSynchronized(){
+        List<Student> students = getAllStudent().stream().toList();
+        if (students.size() < 6) {
+            System.out.println("Недостаточно студентов для вывода");
+            return;
+        }
+        
+        printStudentNameSync(students.get(0).getName());
+        printStudentNameSync(students.get(1).getName());
+        
+        Thread t1 = new Thread(() -> {
+            printStudentNameSync(students.get(2).getName());
+            printStudentNameSync(students.get(3).getName());
+        });
+        
+        Thread t2 = new Thread(() -> {
+            printStudentNameSync(students.get(4).getName());
+            printStudentNameSync(students.get(5).getName());
+        });
+        t1.start();
+        t2.start();
+    }
 }
